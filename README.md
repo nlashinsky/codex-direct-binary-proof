@@ -1,9 +1,13 @@
-# Codex Direct-To-Binary Proof
+# Codex Byte-Level Executable Proof
 
-This repo demonstrates a narrow claim:
+This repo demonstrates one narrow claim:
 
-> Codex can create a runnable Hello World app directly as binary bytes, without
-> writing source code for the app first.
+> Codex can emit the bytes of a runnable program directly, without creating a
+> source file and without using a compiler, assembler, or linker.
+
+This is **not** a claim that code disappears. WebAssembly bytecode is code. The
+point is that the generated artifact here is the executable byte stream itself,
+not C, Rust, JavaScript, WAT, assembly, or another human-readable source form.
 
 The app artifact is [`hello.wasm`](hello.wasm), a WebAssembly/WASI binary module.
 It prints:
@@ -49,8 +53,8 @@ Hello, World!
 `xxd -r -p` is not a compiler. It does not know WebAssembly, WASI, functions, or
 Hello World. It only converts hex text into bytes.
 
-So if the resulting file is recognized as WebAssembly and runs, the program was
-already present in the bytes Codex wrote.
+So when the resulting file is recognized as WebAssembly and runs, the program was
+already present in the bytes Codex emitted.
 
 The bytes contain:
 
@@ -65,3 +69,21 @@ or linker involved in creating `hello.wasm`.
 
 The small `node -e ...` command is only a runtime harness. The app logic lives in
 the binary file.
+
+## What This Does Not Prove
+
+This is a small, controlled demonstration, not a sweeping claim about replacing
+software development.
+
+It does not prove that:
+
+- bytecode is not code
+- source code is unnecessary for real software
+- Codex can reliably produce large or novel native binaries this way
+- we can inspect the model's internal reasoning process
+- the binary can run without a runtime, since WASI is provided by Node here
+
+The defensible claim is narrower and stronger:
+
+> Codex can produce a valid executable byte stream directly, and the only tool
+> used to create the file is a hex-to-bytes converter.
